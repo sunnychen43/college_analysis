@@ -13,9 +13,9 @@ def scrape_all_comments(url):
 
 
 # Takes comment (HtmlElement) and returns list of text if valid result, or false if not result.
-def matches_format(comment):
+def format(comment):
     body = comment.xpath('div/div[3]/div/div[1]/node()')  # Gets body of comment
-    body = clean_list(flatten([to_string(e) for e in body]))  # Converts body into a list of strings per element
+    body = clean_junk(flatten([to_string(e) for e in body]))  # Converts body into a list of strings per element
     for line in body[:5]:  # Checks if "decision:" is in the first 5 lines case-insensitive
         if "decision:" in line.lower():
             return body
@@ -23,7 +23,7 @@ def matches_format(comment):
 
 
 # Removes junk text (\n    [tags]) in a list of strings
-def clean_list(l):
+def clean_junk(l):
     new_list = []
     for e in l:
         e = re.sub(r'\n *', '', e)  # Remove all line breaks and extra spaces
