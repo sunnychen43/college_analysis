@@ -23,9 +23,9 @@ def format(comment):
 
 
 # Removes junk text (\n    [tags]) in a list of strings
-def clean_junk(l):
+def clean_junk(list):
     new_list = []
-    for e in l:
+    for e in list:
         e = re.sub(r'\n *', '', e)  # Remove all line breaks and extra spaces
         e = re.sub(r'\[(.*?)\]', '', e)  # Remove all [tags]
         if e == "":  # If element is blank, skip adding it to the output list
