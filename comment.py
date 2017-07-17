@@ -3,7 +3,7 @@ from lxml.etree import _ElementUnicodeResult
 import re
 import requests
 
-
+#test git
 # Returns list of comments (HtmlElement)
 def scrape_all_comments(url):
     page = requests.get(url)
