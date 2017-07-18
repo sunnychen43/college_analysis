@@ -3,7 +3,7 @@ from lxml.etree import _ElementUnicodeResult
 import re
 import requests
 
-#test git
+
 # Returns list of comments (HtmlElement)
 def scrape_all_comments(url):
     page = requests.get(url)
@@ -26,8 +26,8 @@ def format(comment):
 def clean_junk(list):
     new_list = []
     for e in list:
-        e = re.sub(r'\n *', '', e)  # Remove all line breaks and extra spaces
-        e = re.sub(r'\[(.*?)\]', '', e)  # Remove all [tags]
+        e = re.sub('\n *', '', e)  # Remove all line breaks and extra spaces
+        e = re.sub('\[(.*?)\]', '', e)  # Remove all [tags]
         if e == "":  # If element is blank, skip adding it to the output list
             continue
         new_list.append(e)  # Add modified element to new list

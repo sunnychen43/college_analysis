@@ -1,9 +1,11 @@
 from lxml import html
 from openpyxl import workbook
+from openpyxl import load_workbook
 import requests
 import re
 import comment
-
+import regex_dict
+import time
 
 # Takes a comment_set, workbook, and imports the comment_set into the workbook starting at id and row
 def save_comment_set(comment_set, wb, id, row):
@@ -12,16 +14,17 @@ def save_comment_set(comment_set, wb, id, row):
     for single_comment in comment_set:  # Loops through all comments in the set
         single_comment = comment.format(single_comment)  # Formats comment
 
+
         if single_comment == False:  # If comment format is invalid, skip it
             print("Invalid Comment")
             comment_count += 1
             continue
 
         for data_point in single_comment:  # Saves each data point in the workbook
-            id_cell = ws["A"+str(row)]
+            id_cell = ws["A" + str(row)]
             id_cell.value = id
 
-            data_cell = ws["B"+str(row)]
+            data_cell = ws["B" + str(row)]
             data_cell.value = data_point
             row += 1
 
@@ -64,10 +67,33 @@ def save_from_url(url, file_name):
     wb.save(file_name)  # Save workbook as file_name
 
 
-save_from_url('http://talk.collegeconfidential.com/cornell-university/1940785-cornell-ed-class-of-2021-results.html', "cornell.xlsx")
+def classify(file_path):
+    wb = load_workbook(file_path)
+    ws = wb.active
+    local_regex_dict = regex_dict.regex_dict
+
+    rows = ws.max_row
+    for current_row in range(rows):
+        current_row += 1
+        if current_row == 1:
+            continue
+
+        data_cell = ws['C' + str(current_row)]
+        data = data_cell.value
+        if data is None:
+            continue
+        for key, value in local_regex_dict.items():
+            p = re.compile(value)
+            m = p.search(data)
+
+            if m:
+                ws['B' + str(current_row)].value = key
+                #data_cell.value = re.sub(p, '', data)
+                break
+        print(current_row, rows)
+    wb.save(file_path)
 
 
-
-
-
-
+start_time = time.time()
+classify('cornell.xlsx')
+print(time.time() - start_time)
