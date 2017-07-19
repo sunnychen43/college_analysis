@@ -5,9 +5,8 @@ import requests
 import re
 import comment
 import regex_dict
-import time
 
-# Takes a comment_set, workbook, and imports the comment_set into the workbook starting at id and row
+# Imports comment_set into workbook starting at id and row
 def save_comment_set(comment_set, wb, id, row):
     ws = wb.active
     comment_count = 1  # Keeps comment count for progress tracking
@@ -24,7 +23,7 @@ def save_comment_set(comment_set, wb, id, row):
             id_cell = ws["A" + str(row)]
             id_cell.value = id
 
-            data_cell = ws["B" + str(row)]
+            data_cell = ws["C" + str(row)]
             data_cell.value = data_point
             row += 1
 
@@ -50,7 +49,8 @@ def save_from_url(url, file_name):
 
     wb = workbook.Workbook()
     wb.active['A1'].value = "ID:"  # Create column headers
-    wb.active['B1'].value = "Data:"
+    wb.active['B1'].value = "Class:"
+    wb.active['C1'].value = "Data:"
 
     id = 1
     row = 2
@@ -72,13 +72,13 @@ def classify(file_path):
     ws = wb.active
     local_regex_dict = regex_dict.regex_dict
 
-    rows = ws.max_row
-    for current_row in range(rows):
-        current_row += 1
-        if current_row == 1:
+    max_row = ws.max_row
+    for row in range(max_row):
+        row += 1
+        if row == 1:
             continue
 
-        data_cell = ws['C' + str(current_row)]
+        data_cell = ws['C' + str(row)]
         data = data_cell.value
         if data is None:
             continue
@@ -87,13 +87,54 @@ def classify(file_path):
             m = p.search(data)
 
             if m:
-                ws['B' + str(current_row)].value = key
-                #data_cell.value = re.sub(p, '', data)
+                ws['B' + str(row)].value = key
+                #data_cell.value = re.sub(p, '', data)  # Removes identifier from every cell in a category
                 break
-        print(current_row, rows)
+        print(row, max_row)
     wb.save(file_path)
 
 
-start_time = time.time()
-classify('cornell.xlsx')
-print(time.time() - start_time)
+def collate_lists(wb):
+    list_categories = ['Major Awards:', 'Extracirriculars:',
+                       'Work Experience:', 'Voulunteer/Community Service:',
+                       'Summer Activities:', 'Senior Year Course Load:', 'Essays:']
+    ws = wb.active
+    max_row = ws.max_row
+    in_list = False
+    list_class = None
+    list_data_cell = None
+    str_list = []
+    for row in range(max_row):
+        row += 1
+        print(ws['B' + str(row)])
+        print(len(str_list))
+        current_class = ws['B' + str(row)].value
+        current_data = ws['C' + str(row)].value
+
+        if in_list:
+            if current_class is not None and current_class != list_class:
+                for string in str_list:
+                    if string is None:
+                        continue
+                    list_data_cell.value += string
+                    print(list_data_cell.value)
+                str_list = []
+            elif current_class is None:
+                str_list.append(str(current_data))
+
+        if not in_list:
+            if current_class in list_categories:
+                list_class = current_class
+                list_data_cell = ws['C' + str(row)]
+                in_list = True
+
+    return wb
+
+
+url = 'http://talk.collegeconfidential.com/cornell-university/1835971-cornell-class-of-2020-ed-results-only.html'
+fp = 'cornell 2020 ed.xlsx'
+#save_from_url(url, fp)
+#classify(fp)
+wb = load_workbook(fp)
+collate_lists(wb)
+wb.save(fp)

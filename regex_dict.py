@@ -1,7 +1,7 @@
 regex_dict = {
 	# Objective
 	'Decision:': 'Decision: ?',
-	'SAT I:': 'SAT ?[Il1](^[Il1]).*?: ?',
+	'SAT I:': 'SAT ?[Il1][^Il1].*?: ?',
 	'ACT:': 'ACT.*?: ?',
 	'SAT II:': 'SAT ?([Il]{2}|2): ?',
 	'GPA:': 'GPA.*?: ?',
@@ -16,7 +16,7 @@ regex_dict = {
 	'Voulunteer/Community Service:': 'Volunteer/Community service: ?',
 	'Summer Activities:': 'Summer Activities: ?',
 	'Essays:': 'Essays.*?: ?',
-	'Recommendations:': 'Recommendations.*?: ?',
+	'Recommendations:': 'Recommendation.*?: ?',
 	'Teacher Rec #1:': 'Teacher Rec #?1: ?',
 	'Teacher Rec #2:': 'Teacher Rec #?2: ?',
 	'Counselor Rec:': 'Counselor Rec: ?',
