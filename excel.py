@@ -115,14 +115,14 @@ def collate_lists(wb):
                     if string is None:
                         continue
                     try:
-                        list_data_cell.value += '\n' + string
+                        list_data_cell.value += ' ' + string
                     except TypeError:
                         list_data_cell.value = string
-                    print(list_data_cell.value)
                 str_list = []
                 in_list = False
             elif current_class is None:
-                str_list.append(str(current_data))
+                str_list.append(current_data)
+                ws['C' + str(row)].value = None
 
         if not in_list:
             if current_class in classifier_lists.list_categories:
