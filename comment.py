@@ -16,7 +16,7 @@ def scrape_all_comments(url):
 def format(comment):
     body = comment.xpath('div/div[3]/div/div[1]/node()')  # Gets body of comment
     body = remove_junk(flatten([to_string(e) for e in body]))  # Converts body into a list of strings per element
-    for line in body[:5]:  # Checks if "decision:" is in the first 5 lines case-insensitive
+    for line in body[:5]:
         if "decision:" in line.lower():
             return body
     return False
@@ -27,17 +27,17 @@ def remove_junk(list):
     new_list = []
     for e in list:
         e = re.sub('\n *', '', e)  # Remove all line breaks and extra spaces
-        e = re.sub('\[(.*?)\]', '', e)  # Remove all [tags]
-        if e == "":  # If element is blank, skip adding it to the output list
+        e = re.sub('\[(.*?)\]', '', e)  # Remove all tags
+        if e == "":
             continue
-        new_list.append(e)  # Add modified element to new list
-    return new_list  # Returns new body without junk text
+        new_list.append(e)
+    return new_list
 
 
 # Converts single html element to string
 def to_string(element):
     if isinstance(element, html.HtmlElement):
-        if element.tag == 'ul':  # If element is list of bullet points
+        if element.tag == 'ul':
             separated_nodes = element.xpath("li/text()")
             return [str(node) for node in separated_nodes]  # Returns string of each node/bullet point
         else:
