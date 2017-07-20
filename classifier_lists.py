@@ -4,14 +4,14 @@ regex_dict = {
     'SAT I:': '^.*?SAT ?[Il1][^Il1].*?: ?',
     'ACT:': '^.*?ACT.*?: ?',
     'SAT II:': '^.*?SAT ?([Il]{2}|2): ?',
-    'Weighted GPA:': '^.*?Weighted GPA.*?: ?',
-    'Unweighted GPA:': '^.*?Unweighted GPA.*?: ?',
-    'GPA:': '^GPA: ?',
+    'GPA:': '^.*?GPA.*?: ?',
     'Rank:': '^.*?Rank.*?: ?',
     'AP:': '^.*?AP.*?: ?',
     'IB:': '^.*?IB.*?: ?',
     'Senior Year Course Load:': '^.*?Senior Year Course Load: ?',
     'Major Awards:': '^.*?Major Awards.*?: ?',
+    'Gender:': '^.*?(Gender|Sex).*?: ?',
+
     # Subjective
     'Extracirriculars:': '^.*?Extracurriculars.*?: ?',
     'Work Experience:': '^.*?Job/Work Experience: ?',
@@ -24,6 +24,7 @@ regex_dict = {
     'Counselor Rec:': '^.*?Counselor Rec: ?',
     'Additional Rec:': '^.*?Additional Rec: ?',
     'Interview:': '^.*?Interview: ?',
+
     # Other
     'Financial Aid:': '^.*?Financial Aid\??: ?',
     'Intended Major:': '^.*?Intended Major: ?',
@@ -34,6 +35,7 @@ regex_dict = {
     'Gender:': '^.*?Gender: ?',
     'Income Bracket:': '^.*?Income Bracket: ?',
     'Hooks:': '^.*?Hooks.*?: ?',
+
     # Reflection
     'Strengths:': '^.*?Strengths: ?',
     'Weaknesses:': '^.*?Weaknesses: ?',
@@ -42,8 +44,7 @@ regex_dict = {
     'Objective:': '^Objective[:-]? ?$',
     'Subjective:': '^Subjective[:-]? ?$',
     'Other:': '^Other[:-]? ?$',
-    'Reflection:': '^Reflection[:-]? ?$',
-    'Sex:': '^.*?Sex.*?: ?'}
+    'Reflection:': '^Reflection[:-]? ?$'}
 
 list_categories = ['Major Awards:', 'Extracirriculars:',
                    'Work Experience:', 'Voulunteer/Community Service:',
@@ -51,3 +52,43 @@ list_categories = ['Major Awards:', 'Extracirriculars:',
                    'Recommendations:', 'AP', 'IB']
 
 exclude_regex = ['^Objective[:-]? ?$', '^Subjective[:-]? ?$', '^Other[:-]? ?$', '^Reflection[:-]? ?$']
+
+headers = {
+    'ID:': 'A',
+    'College:': 'B',
+    'Year:': 'C',
+    'Type:': 'D',
+    'Decision:': 'E',
+    'SAT I:': 'F',
+    'ACT:': 'G',
+    'SAT II:': 'H',
+    'GPA:': 'I',
+    'Rank:': 'J',
+    'AP:': 'K',
+    'IB:': 'L',
+    'Senior Year Course Load:': 'M',
+    'Major Awards:': 'N',
+    'Extracirriculars:': 'O',
+    'Work Experience:': 'P',
+    'Voulunteer/Community Service:': 'Q',
+    'Summer Activities:': 'R',
+    'Essays:': 'S',
+    'Recommendations:': 'T',
+    'Teacher Rec #1:': 'U',
+    'Teacher Rec #2:': 'V',
+    'Counselor Rec::': 'W',
+    'Additional Rec::': 'X',
+    'Interview::': 'Y',
+    'Financial Aid:': 'Z',
+    'Intended Major:': 'AA',
+    'State:': 'AB',
+    'Country:': 'AC',
+    'School Type:': 'AD',
+    'Ethnicity:': 'AE',
+    'Gender:': 'AF',
+    'Income Bracket:': 'AG',
+    'Hooks:': 'AH',
+    'Strengths:': 'AI',
+    'Weaknesses:': 'AJ',
+    'Why:': 'AK',
+    'Where else:': 'AL'}
