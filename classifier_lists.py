@@ -1,9 +1,9 @@
 regex_dict = {
     # Objective
     'Decision:': '^.*?Decision: ?',
-    'SAT I:': '^.*?SAT ?[Il1][^Il1].*?: ?',
+    'SAT I:': '^.*?SAT(?! [Il1]{2}).*?: ?',
     'ACT:': '^.*?ACT.*?: ?',
-    'SAT II:': '^.*?SAT ?([Il]{2}|2): ?',
+    'SAT II:': '^.*?SAT ?([Il]{2}|2).*?: ?',
     'GPA:': '^.*?GPA.*?: ?',
     'Rank:': '^.*?Rank.*?: ?',
     'AP:': '^.*?AP.*?: ?',
@@ -90,5 +90,5 @@ headers = {
     'Hooks:': 'AH',
     'Strengths:': 'AI',
     'Weaknesses:': 'AJ',
-    'Why:': 'AK',
-    'Where else:': 'AL'}
+    'Why?:': 'AK',
+    'Where else?:': 'AL'}
