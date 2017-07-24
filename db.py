@@ -55,8 +55,3 @@ def create_db(url, file_path):
 	create_headers(db_wb)
 	raw_to_db(raw_wb, db_wb, 'Cornell', '2020', 'ED')
 	db_wb.save(file_path)
-
-
-url = 'http://talk.collegeconfidential.com/cornell-university/1835971-cornell-class-of-2020-ed-results-only.html'
-file_path = 'db.xlsx'
-create_db(url, file_path)
