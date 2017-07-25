@@ -1,6 +1,7 @@
 from lxml import html
 from openpyxl import workbook
 from openpyxl import load_workbook
+import sys
 import requests
 import re
 import comment
@@ -61,7 +62,9 @@ def get_comments(url, wb):
 
         comment_set = comment.scrape_all_comments(new_url)
         id, row = save_comment_set(comment_set, wb, id, row)
-        print('Save:', "Page", str(page_id) + '/' + str(num_pages), "done")
+        print('Page', page_id, '/', num_pages, 'done', end='\r')
+        sys.stdout.flush()
+    print('Pages done       ')
 
 
 # Assigns each entry a class if it matches

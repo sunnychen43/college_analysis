@@ -13,7 +13,7 @@ regex_dict = {
     'Gender:': '^.*?(Gender|Sex).*?: ?',
 
     # Subjective
-    'Extracirriculars:': '^.*?Extracurriculars.*?: ?',
+    'Extracirriculars:': '^.*?(Extracurriculars|EC).*?: ?',
     'Work Experience:': '^.*?Job/Work Experience: ?',
     'Voulunteer/Community Service:': '^.*?Volunteer/Community service: ?',
     'Summer Activities:': '^.*?Summer Activities: ?',
@@ -34,7 +34,7 @@ regex_dict = {
     'Ethnicity:': '^.*?Ethnicity: ?',
     'Gender:': '^.*?Gender: ?',
     'Income Bracket:': '^.*?Income Bracket: ?',
-    'Hooks:': '^.*?Hooks.*?: ?',
+    'Hooks:': '^.*?Hook.*?: ?',
 
     # Reflection
     'Strengths:': '^.*?Strengths: ?',
@@ -90,5 +90,10 @@ headers = {
     'Hooks:': 'AH',
     'Strengths:': 'AI',
     'Weaknesses:': 'AJ',
-    'Why?:': 'AK',
-    'Where else?:': 'AL'}
+    'Why?': 'AK',
+    'Where else?': 'AL',
+    'Accepted': 'AM',
+    'Waitlisted': 'AN',
+    'Deferred': 'AO',
+    'Rejected': 'AP',
+    'Applied': 'AQ'}
