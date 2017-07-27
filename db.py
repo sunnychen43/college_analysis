@@ -86,25 +86,10 @@ def clean(wb):
 	return new_wb
 
 
-# Finds and writes decisions of multiple schools
-def find_decisions(wb):
-	ws = wb.active
-	max_row = ws.max_row
-	for i in range(max_row):
-		row = i + 2
-		decisions = expand_entry.get_decisions(ws.cell(column=classifier_lists.headers.index('Where else?') + 1, row=row).value)
-		if decisions is None:
-			continue
-		for decision in decisions:
-			column = classifier_lists.headers.index(decision[0]) + 1
-			ws.cell(column=column, row=row).value = decision[1]
-	print('Additional decisions done')
-
-
 def parse_sat1(wb):
 	ws = wb.active
 	max_row = ws.max_row
-	for i in range(max_row):
+	for i in range(max_row - 1):
 		row = i + 2
 		text = ws.cell(column=classifier_lists.headers.index('SAT I:') + 1, row=row).value
 		if text is None:
@@ -142,7 +127,7 @@ def parse_sat1(wb):
 def parse_act(wb):
 	ws = wb.active
 	max_row = ws.max_row
-	for i in range(max_row):
+	for i in range(max_row - 1):
 		row = i + 2
 		text = ws.cell(column=classifier_lists.headers.index('ACT:') + 1, row=row).value
 		if text is None:
@@ -157,3 +142,33 @@ def parse_act(wb):
 		act_average = int(act_total / len(matches))
 		ws.cell(column=classifier_lists.headers.index('ACT Composite:') + 1, row=row).value = str(act_average)
 	print('ACT done')
+
+
+def create_additional_entries(wb):
+	ws = wb.active
+	max_row = ws.max_row
+	max_column = ws.max_column
+	counter = 1  # Counter to find next blank ine
+	for i in range(max_row - 1):  # Loop through all but first row
+		row = i + 2
+		decisions = expand_entry.get_decisions(ws.cell(column=classifier_lists.headers.index('Where else?') + 1, row=row).value)
+		ws.cell(column=classifier_lists.headers.index('Where else?') + 1, row=row).value = None
+		additional_schools = []
+		if decisions is None:
+			continue
+		for decision, schools in decisions:
+			for school in schools.split(', '):
+				additional_schools.append((decision, school))
+		if additional_schools is None:
+			continue
+		for decision, school in additional_schools:  # Add line per additional decision
+			if school == '':
+				continue
+			new_row = max_row + counter
+			for j in range(max_column - 1):  # Copy all columns but the last 4
+				new_column = j + 1
+				ws.cell(column=new_column, row=new_row).value = ws.cell(column=new_column, row=row).value  # Copy line to bottom of worksheet
+			ws.cell(column=classifier_lists.headers.index('Decision:') + 1, row=new_row).value = decision  # Change decision and school fields
+			ws.cell(column=classifier_lists.headers.index('College:') + 1, row=new_row).value = school
+			counter += 1
+	print('Additional Entries done')

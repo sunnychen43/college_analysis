@@ -36,7 +36,7 @@ if __name__ == '__main__':
 		tmp = sp.call('clear', shell=True)
 	wb = load_workbook(sys.argv[2])  # Run formatting on completed workbook
 	wb = db.clean(wb)
-	db.find_decisions(wb)
 	db.parse_sat1(wb)
 	db.parse_act(wb)
+	db.create_additional_entries(wb)
 	wb.save(sys.argv[2])

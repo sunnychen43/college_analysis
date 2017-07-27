@@ -96,8 +96,4 @@ headers = [
     'Strengths:',
     'Weaknesses:',
     'Why?',
-    'Where else?',
-    'Accepted',
-    'Waitlisted',
-    'Deferred',
-    'Rejected']
+    'Where else?']
