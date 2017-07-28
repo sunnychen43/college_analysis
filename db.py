@@ -73,7 +73,7 @@ def clean(wb):
 	max_row = old_ws.max_row
 	max_column = old_ws.max_column
 
-	for i in range(max_row):
+	for i in range(max_row):  # Check if line is missing 3 elements
 		row = i + 1
 		if old_ws.cell(column=classifier_lists.headers.index('SAT I:') + 1, row=row).value is None:
 			if old_ws.cell(column=classifier_lists.headers.index('SAT II:') + 1, row=row).value is None:
@@ -86,25 +86,27 @@ def clean(wb):
 	return new_wb
 
 
+# Adds SAT total and breakdown scores
 def parse_sat1(wb):
 	ws = wb.active
 	max_row = ws.max_row
-	for i in range(max_row - 1):
+	for i in range(max_row - 1):  # Check all rows
 		row = i + 2
 		text = ws.cell(column=classifier_lists.headers.index('SAT I:') + 1, row=row).value
 		if text is None:
 			continue
-		totalscorep = re.compile('(\d{3}0)')
+		totalscorep = re.compile('(\d{3}0)')  # Find four digit number
 		total_score = totalscorep.findall(text)
 
-		subscorep = re.compile('((?<!\d)\d{2}0(?!\d))')
+		subscorep = re.compile('((?<!\d)\d{2}0(?!\d))')  # Find 3 digit numbers
 		subscores = subscorep.findall(text)
+		# Find subject labels
 		subcatp = re.compile('(?=(math|reading|writing|(?<![a-z])w(?![a-z])|(?<![a-z])r(?![a-z])|(?<![a-z])cr(?![a-z])|(?<![a-z])m(?![a-z])))', re.IGNORECASE)
 		subcats = subcatp.findall(text)
 
 		breakdown = []
-		if len(subcats) == 3 and len(subscores) == 3:
-			if len(total_score) == 0:
+		if len(subcats) == 3 and len(subscores) == 3:  # Make sure number of subjects = number of scores
+			if len(total_score) == 0:  # If total_score is not given, calculate it from the sum of the subject scores
 				total_score.append(str(sum([int(score) for score in subscores])))
 			for i in range(3):
 				subject = subcats[i]
@@ -117,13 +119,14 @@ def parse_sat1(wb):
 				if subject.lower() in ['w', 'writing']:
 					breakdown.append(('Writing:', subscores[i]))
 					continue
-		if len(total_score) != 0:
+		if len(total_score) != 0:  # Add total score
 			ws.cell(column=classifier_lists.headers.index('Total Score') + 1, row=row).value = total_score[0]
-		for subject in breakdown:
+		for subject in breakdown:  # Add subject scores
 			ws.cell(column=classifier_lists.headers.index(subject[0]) + 1, row=row).value = subject[1]
 	print('SAT I done')
 
 
+# Add cumulative act scores
 def parse_act(wb):
 	ws = wb.active
 	max_row = ws.max_row
@@ -132,7 +135,7 @@ def parse_act(wb):
 		text = ws.cell(column=classifier_lists.headers.index('ACT:') + 1, row=row).value
 		if text is None:
 			continue
-		p = re.compile('(\d{2})')
+		p = re.compile('(\d{2})')  # Find all 2 digit numbers
 		matches = p.findall(text)
 		if len(matches) == 0:
 			continue
@@ -144,6 +147,7 @@ def parse_act(wb):
 	print('ACT done')
 
 
+# Creates additional entries based on where else the person went
 def create_additional_entries(wb):
 	ws = wb.active
 	max_row = ws.max_row
@@ -153,9 +157,9 @@ def create_additional_entries(wb):
 		row = i + 2
 		decisions = expand_entry.get_decisions(ws.cell(column=classifier_lists.headers.index('Where else?') + 1, row=row).value)
 		ws.cell(column=classifier_lists.headers.index('Where else?') + 1, row=row).value = None
-		additional_schools = []
 		if decisions is None:
 			continue
+		additional_schools = []
 		for decision, schools in decisions:
 			for school in schools.split(', '):
 				additional_schools.append((decision, school))
